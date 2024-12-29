@@ -118,35 +118,29 @@ const AboutScreen = () => (
     style={styles.linearGradient}
   >
     <View style={styles.drawerContainer}>
+    <Text style={styles.header}>Radio Cristiana Radio</Text>
       <Text style={styles.drawerText}>
-        Bienvenidos a nuestra emisora. Ofrecemos música cristiana, enseñanzas bíblicas y programas de oración para fortalecer la fe y la unidad. Respaldada por la iglesia 'Reconciliacion Church', estamos comprometidos a difundir el mensaje de amor y esperanza de nuestro Señor Jesucristo. ¡Gracias por ser parte de nuestra familia!
+      Bienvenidos a nuestra emisora cristiana, donde podrás escuchar alabanzas, adoraciones, enseñanzas bíblicas y programas de oración, diseñados para fortalecer la fe, la esperanza y la unidad.
       </Text>
       <Text style={styles.subHeader}>Redes Sociales</Text>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
-          <Icon name="facebook" size={24} color="#FFF" />
-          <Text style={styles.linkText}>Facebook</Text>
+          <Icon name="facebook" size={22} color="#FFF" />
+          <Text style={styles.linkText}> Facebook</Text>
         </View>
         <Text style={styles.link}>https://facebook.com/RadioCristiana</Text>
       </View>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
-          <Icon name="instagram" size={24} color="#FFF" />
-          <Text style={styles.linkText}>Instagram</Text>
+          <Icon name="instagram" size={22} color="#FFF" />
+          <Text style={styles.linkText}> Instagram</Text>
         </View>
         <Text style={styles.link}>https://instagram.com/RadioCristiana</Text>
       </View>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
-          <Icon name="tiktok" size={24} color="#FFF" />
-          <Text style={styles.linkText}>TikTok</Text>
-        </View>
-        <Text style={styles.link}>https://tiktok.com/@RadioCristiana</Text>
-      </View>
-      <View style={styles.linkContainer}>
-        <View style={styles.socialRow}>
-          <Icon name="youtube" size={24} color="#FFF" />
-          <Text style={styles.linkText}>YouTube</Text>
+          <Icon name="youtube" size={22} color="#FFF" />
+          <Text style={styles.linkText}> YouTube</Text>
         </View>
         <Text style={styles.link}>https://youtube.com/RadioCristiana</Text>
       </View>
@@ -349,6 +343,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFF',
     marginTop: 10,
+    marginLeft:2,
     textAlign: 'left', // Añadido para alinear el texto a la izquierda
   },
   socialRow: {
