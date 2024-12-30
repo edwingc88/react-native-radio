@@ -132,7 +132,7 @@ const AboutScreen = () => (
           <Text style={styles.linkText} onPress={() => Linking.openURL('https://facebook.com/RadioCristiana')}> Facebook</Text>
         </View>
       </View>
-      <View style={styles.linkCon;tainer}>
+      <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
           <Icon name="instagram" size={22} color="#FFF" />
           <Text style={styles.linkText} onPress={() => Linking.openURL('https://instagram.com/RadioCristiana')}> Instagram</Text>
