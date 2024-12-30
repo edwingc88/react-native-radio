@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar, BackHandler, ImageBackground } from 'react-native';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
@@ -112,43 +112,49 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
+
+
+// En tu componente de AboutScreen
 const AboutScreen = () => (
   <LinearGradient
     colors={['#1e3c72', '#2a5298']}
     style={styles.linearGradient}
   >
     <View style={styles.drawerContainer}>
-    <Text style={styles.header}>Radio Cristiana Radio</Text>
+      <Text style={styles.header}>Radio Cristiana Radio</Text>
       <Text style={styles.drawerText}>
-      Bienvenidos a nuestra emisora cristiana, donde podrás escuchar alabanzas, adoraciones, enseñanzas bíblicas y programas de oración, diseñados para fortalecer la fe, la esperanza y la unidad.
+        Bienvenidos a nuestra emisora cristiana, donde podrás escuchar alabanzas, adoraciones, enseñanzas bíblicas y programas de oración, diseñados para fortalecer la fe, la esperanza y la unidad.
       </Text>
       <Text style={styles.subHeader}>Redes Sociales</Text>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
           <Icon name="facebook" size={22} color="#FFF" />
-          <Text style={styles.linkText}> Facebook</Text>
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://facebook.com/RadioCristiana')}> Facebook</Text>
         </View>
-        <Text style={styles.link}>https://facebook.com/RadioCristiana</Text>
       </View>
-      <View style={styles.linkContainer}>
+      <View style={styles.linkCon;tainer}>
         <View style={styles.socialRow}>
           <Icon name="instagram" size={22} color="#FFF" />
-          <Text style={styles.linkText}> Instagram</Text>
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://instagram.com/RadioCristiana')}> Instagram</Text>
         </View>
-        <Text style={styles.link}>https://instagram.com/RadioCristiana</Text>
       </View>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
           <Icon name="youtube" size={22} color="#FFF" />
-          <Text style={styles.linkText}> YouTube</Text>
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://youtube.com/RadioCristiana')}> YouTube</Text>
         </View>
-        <Text style={styles.link}>https://youtube.com/RadioCristiana</Text>
+      </View>
+      <View style={styles.linkContainer}>
+        <View style={styles.socialRow}>
+          <Icon name="tiktok" size={22} color="#FFF" />
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://tiktok.com/@RadioCristiana')}> TikTok</Text>
+        </View>
       </View>
       <View style={styles.spacer} />
       <View style={styles.footer}>
-        <Text style={styles.footerLink}>Sitio Web</Text>
-        <Text style={styles.footerLink}>Políticas de Privacidad</Text>
-        <Text style={styles.footerLink}>Licencias</Text>
+        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://yourwebsite.com')}>Sitio Web</Text>
+        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://yourwebsite.com/privacy')}>Políticas de Privacidad</Text>
+        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://yourwebsite.com/licenses')}>Licencias</Text>
       </View>
     </View>
   </LinearGradient>
@@ -246,7 +252,6 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
 const styles = StyleSheet.create({
   background: {
     flex: 1,
@@ -307,9 +312,9 @@ const styles = StyleSheet.create({
   },
   statusText: {
     color: '#fbdd40',
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 4,
   },
   playButtonText: {
     color: '#000000',
@@ -342,23 +347,14 @@ const styles = StyleSheet.create({
   linkText: {
     fontSize: 16,
     color: '#FFF',
-    marginTop: 10,
-    marginLeft:2,
     textAlign: 'left', // Añadido para alinear el texto a la izquierda
-  },
-  socialRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
+    marginLeft: 10,
+    lineHeight: 24, // Añadido para alinear el texto verticalmente con el icono
   },
   link: {
     color: '#FFF',
     textDecorationLine: 'underline',
     marginTop: 5,
-  },
-  linkContainer: {
-    alignItems: 'flex-start', // Añadido para alinear los elementos a la izquierda
-    marginBottom: 15,
   },
   osText: {
     fontSize: 16,
@@ -370,16 +366,21 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#fbdd40', 
+    color: '#FFF',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
   },
+  socialRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
   linkContainer: {
     alignItems: 'flex-start', // Añadido para alinear los elementos a la izquierda
-    marginBottom: 20,
+    marginBottom: 15,
   },
   copyButton: {
     backgroundColor: '#007bff',
@@ -388,13 +389,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   logoImage: {
-    marginTop:3,
-    width: 180,
-    height: 180,
-    borderRadius: 90, // Mantén la misma relación de aspecto para que sea completamente circular
+    width: 140,
+    height: 140,
+    borderRadius: 70, // Mantén la misma relación de aspecto para que sea completamente circular
     borderWidth: 2,
     borderColor: '#FFFFFF', // Agrega un borde blanco
-    marginBottom: 3,
   },
   linearGradient: {
     flex: 1,
@@ -427,4 +426,3 @@ const styles = StyleSheet.create({
     textAlign: 'left', // Añadido para alinear el texto a la izquierda
   },
 });
-
