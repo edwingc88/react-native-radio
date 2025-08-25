@@ -3,11 +3,10 @@ import { View, Text, StyleSheet, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const AboutScreen = () => (
-  <LinearGradient
-    colors={['#140530', '#2e0c3f']}
-    style={styles.linearGradient}
-  >
+
+const AboutScreen = ({ themeColor = '#8e24aa' }) => (
+  <LinearGradient colors={[themeColor, '#000000ff']} style={styles.background}>
+    <View style={styles.container}> 
     <View style={styles.drawerContainer}>
       <Text style={styles.header}>Radio Cristiana Radio</Text>
       <Text style={styles.drawerText}>
@@ -17,19 +16,25 @@ const AboutScreen = () => (
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
           <Icon name="facebook" size={22} color="#FFF" />
-          <Text style={styles.linkText} onPress={() => Linking.openURL('https://facebook.com/RadioCristiana')}> Facebook</Text>
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://www.facebook.com/profile.php?id=61569653967637')}> Facebook</Text>
+        </View>
+      </View>
+      <View style={styles.linkContainer}>
+        <View style={styles.socialRow}>
+          <Icon name="whatsapp" size={22} color="#FFF" />
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://www.facebook.com/profile.php?id=61569653967637')}> whatsapp</Text>
         </View>
       </View>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
           <Icon name="instagram" size={22} color="#FFF" />
-          <Text style={styles.linkText} onPress={() => Linking.openURL('https://instagram.com/RadioCristiana')}> Instagram</Text>
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://www.instagram.com/radiocristianaradio')}> Instagram</Text>
         </View>
       </View>
       <View style={styles.linkContainer}>
         <View style={styles.socialRow}>
           <Icon name="youtube" size={22} color="#FFF" />
-          <Text style={styles.linkText} onPress={() => Linking.openURL('https://youtube.com/RadioCristiana')}>YouTube</Text>
+          <Text style={styles.linkText} onPress={() => Linking.openURL('https://www.youtube.com/@martinezhalberto')}> YouTube</Text>
         </View>
       </View>
       <View style={styles.linkContainer}>
@@ -38,17 +43,31 @@ const AboutScreen = () => (
           <Text style={styles.linkText} onPress={() => Linking.openURL('https://tiktok.com/@RadioCristiana')}> TikTok</Text>
         </View>
       </View>
+
       <View style={styles.spacer} />
       <View style={styles.footer}>
-        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://yourwebsite.com')}>Sitio Web</Text>
-        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://yourwebsite.com/privacy')}>Políticas de Privacidad</Text>
-        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://yourwebsite.com/licenses')}>Licencias</Text>
+        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://radiocristianaradio.com/')}>Sitio Web</Text>
+        <Text style={styles.footerLink} onPress={() => Linking.openURL('https://radiocristianaradio.com//legal')}>Políticas de Privacidad</Text>
       </View>
+    </View>
     </View>
   </LinearGradient>
 );
 
+
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+/*     justifyContent: 'center', */
+  },
+  container: {
+    padding: 10,
+    backgroundColor: 'transparent',
+    borderRadius: 10,
+    margin: 10,
+  },
   linearGradient: {
     flex: 1,
     padding: 20,

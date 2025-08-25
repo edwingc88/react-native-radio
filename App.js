@@ -1,102 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { StatusBar, BackHandler, ImageBackground } from 'react-native';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+  StatusBar,
+  BackHandler,
+  ImageBackground
+} from 'react-native';
+import { Audio } from 'expo-av';
+import Slider from '@react-native-community/slider';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { useVideoPlayer, VideoView } from 'expo-video';
+import { LinearGradient } from 'expo-linear-gradient';
 import AboutScreen from './components/AboutScreen';
 import ShareAppScreen from './components/ShareAppScreen';
-import Slider from '@react-native-community/slider';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { LinearGradient } from 'expo-linear-gradient';
 import Programacion from './src/Programacion';
+import ThemeColor from './components/ThemeColor';
 
 const icon = require('./assets/logo-radio-cristiana-recorte.png');
-const background = require('./assets/fondomorado2.jpg');
-const remoteSource = "https://stream.zeno.fm/utojpczqio2tv";
-
-const { width, height } = Dimensions.get('window');
-
+/* const background = require('./assets/fondo_morado.jpg'); */
+const fondoMorado = require('./assets/fondo_morado.jpg');
+const fondoNegro = require('./assets/fondo_negro.png');
+const fondoAzul = require('./assets/fondo_azul.png');
+const remoteSource = "https://s2.radio.co/sb8a87a94f/listen";
+const { width } = Dimensions.get('window');
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const HomeScreen = ({ navigation }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState('Adoraciones y Alabanzas');
-  const [volume, setVolume] = useState(1.0);
+// Mapea los temas a sus imágenes
+const THEME_IMAGES = {
+  '#2196F3': fondoAzul,
+  '#000000': fondoNegro,
+  '#4b1759ff': fondoMorado,
+};
 
-  const player = useVideoPlayer(remoteSource, (player) => {
-    player.loop = true;
-    player.staysActiveInBackground = true;
-    player.play();
-  });
 
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-    if (isPlaying) {
-      player.pause();
-    } else {
-      player.play();
-    }
-  };
+const HomeScreen = ({
+  navigation,
+  themeColor = '#8e24aa',
+  isPlaying,
+  handlePlayPause,
+  volume,
+  handleVolumeChange
+}) => {
 
-  useEffect(() => {
-    const eventSource = new EventSource('http://api.zeno.fm/mounts/metadata/subscribe/utojpczqio2tv');
+  // Selecciona la imagen de fondo según el tema
+  const backgroundImage = THEME_IMAGES[themeColor] || fondoMorado;
 
-    eventSource.onopen = () => {
-      console.log('EventSource connected');
-    };
-
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.streamTitle) {
-          setCurrentTrack(data.streamTitle);
-        } else {
-          setCurrentTrack('No track info available');
-        }
-      } catch (error) {
-        setCurrentTrack('Error fetching track info');
-      }
-    };
-
-    eventSource.onerror = (error) => {
-      setCurrentTrack('Error with event source');
-      eventSource.close();
-    };
-
-    return () => {
-      eventSource.close();
-    };
-  }, []);
 
   return (
-    <ImageBackground source={background} style={styles.background}>
+    <ImageBackground source={backgroundImage} style={styles.background}>
       <View style={styles.container}>
         <StatusBar style="auto" />
-        <TouchableOpacity 
-          style={styles.menuButton} 
-          onPress={() => navigation.openDrawer()}
-        >
+
+        <TouchableOpacity style={styles.menuButton} onPress={() => navigation.openDrawer()}>
           <Icon name="bars" size={24} color="#FFF" />
         </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.programButton} 
-          onPress={() => navigation.navigate('Programacion')}
-        >
+
+        <TouchableOpacity style={styles.programButton} onPress={() => navigation.navigate('Programacion')}>
           <Icon name="calendar" size={24} color="#FFF" />
         </TouchableOpacity>
-        <Text style={styles.statusText}>ONLINE</Text>
-        <Image source={icon} style={styles.logoImage} />
-
-        <VideoView 
-          player={player} 
-          style={styles.hiddenVideo} 
-          allowsPictureInPicture={true}
-        />
-
-        <Text style={styles.currentTrack}>{currentTrack}</Text>
+        <Text style={styles.statusOnline}>ONLINE</Text>
+        <Text style={styles.statusText}>RADIO CRISTIANA RADIO</Text>
+        <View style={styles.logoBackground}>
+            <Image source={icon} style={styles.logoImage}  resizeMode="cover" />
+        </View>
 
         <TouchableOpacity style={styles.playButton} onPress={handlePlayPause}>
           <Icon name={isPlaying ? 'pause' : 'play'} size={30} color="#000" style={styles.icon} />
@@ -107,66 +80,282 @@ const HomeScreen = ({ navigation }) => {
           minimumValue={0}
           maximumValue={1}
           value={volume}
-          onValueChange={value => {
-            setVolume(value);
-            player.volume = value;
-          }}
+          onValueChange={handleVolumeChange}
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#000000"
         />
+
       </View>
     </ImageBackground>
   );
 };
 
-const CustomDrawerContent = (props) => (
-  <LinearGradient
-    colors={['#140530', '#2e0c3f']}
-    style={{ flex: 1 }}
-  >
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Salir"
-        onPress={() => BackHandler.exitApp()}
-        labelStyle={{ color: '#FFF' }}
-      />
-    </DrawerContentScrollView>
-  </LinearGradient>
-);
-
-const StackNavigator = () => {
+const CustomDrawerContent = (props) => {
+  const { themeColor } = props;
   return (
-    <Stack.Navigator initialRouteName="HomeScreen">
-      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Programacion" component={Programacion} options={{ title: 'Programación' }} />
-    </Stack.Navigator>
+    <LinearGradient colors={[themeColor, '#000000ff']} style={{ flex: 1 }}>
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Salir"
+          onPress={() => BackHandler.exitApp()}
+          labelStyle={{ color: '#FFF' }}
+          icon={() => <Icon name="sign-out" size={22} color="#FFF" />}
+        />
+      </DrawerContentScrollView>
+    </LinearGradient>
   );
 };
 
+/* 
+const StackNavigator = () => (
+  <Stack.Navigator initialRouteName="HomeScreen">
+    <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="Programacion" component={Programacion} options={{ title: 'Programación' }} />
+  </Stack.Navigator>
+); */
+
+const StackNavigator = ({ themeColor, isPlaying, handlePlayPause, volume, handleVolumeChange }) => (
+  <Stack.Navigator initialRouteName="HomeScreen">
+    <Stack.Screen
+      name="HomeScreen"
+      options={{ headerShown: false }}
+    >
+{/*       {props => <HomeScreen {...props} themeColor={themeColor} />} */}
+    
+          {props => (
+        <HomeScreen
+          {...props}
+          themeColor={themeColor}
+          isPlaying={isPlaying}
+          handlePlayPause={handlePlayPause}
+          volume={volume}
+          handleVolumeChange={handleVolumeChange}
+        />
+      )}
+    </Stack.Screen>
+    <Stack.Screen name="Programacion" component={Programacion} options={{ title: 'Programación' }} />
+  </Stack.Navigator>
+);
+
+
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={{
-          drawerLabelStyle: { color: '#FFF' }
-        }}
+
+
+const soundRef = useRef(new Audio.Sound());
+const [volume, setVolume] = useState(1.0);
+const [isPlaying, setIsPlaying] = useState(false);
+
+const loadStream = async () => {
+  try {
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      staysActiveInBackground: true,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+      playThroughEarpieceAndroid: false,
+    });
+
+    await soundRef.current.loadAsync(
+      { uri: remoteSource },
+      { shouldPlay: false, volume }
+    );
+
+    await soundRef.current.playAsync();
+    setIsPlaying(true);
+  } catch (error) {
+    console.warn('Error al cargar el stream:', error);
+  }
+};
+
+const unloadStream = async () => {
+  try {
+    await soundRef.current.unloadAsync();
+  } catch (error) {
+    console.warn('Error al descargar el stream:', error);
+  }
+};
+
+const handlePlayPause = async () => {
+  try {
+    if (isPlaying) {
+      await soundRef.current.pauseAsync();
+      setIsPlaying(false);
+    } else {
+      await soundRef.current.playAsync();
+      setIsPlaying(true);
+    }
+  } catch (error) {
+    console.warn('Error en reproducción:', error);
+  }
+};
+
+const handleVolumeChange = async (value) => {
+  setVolume(value);
+  await soundRef.current.setVolumeAsync(value);
+};
+
+useEffect(() => {
+  loadStream();
+  return () => {
+    unloadStream();
+  };
+}, []);
+
+
+  // Estado para el color del tema (por defecto morado)
+  const [themeColor, setThemeColor] = useState('#8e24aa');
+
+  // Pasamos setThemeColor a ThemeColor para que cambie el fondo
+/*   const ThemeColorScreen = (props) => (
+    <ThemeColor {...props} onChangeTheme={setThemeColor} />
+  ); */
+const ThemeColorScreen = (props) => (
+  <ThemeColor {...props} onChangeTheme={setThemeColor} themeColor={themeColor} />
+);
+
+
+    return (
+  <NavigationContainer>
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} themeColor={themeColor} />}
+      screenOptions={{
+        drawerLabelStyle: { color: '#FFF' },
+        headerStyle: { backgroundColor: themeColor }, // Cambia el color de la cabecera
+        headerTintColor: '#FFF',
+        headerTitleStyle: { fontWeight: '600' },
+      }}
+    >
+      <Drawer.Screen
+          name="Inicio"
+          options={{ headerShown: false, drawerIcon:()=>(<Icon name="home" size={24} color="#FFF" />) }}
+        >
+        {/*           {props => <StackNavigator {...props} themeColor={themeColor} />} */}
+
+        {props => (
+          <StackNavigator
+            {...props}
+            themeColor={themeColor}
+            isPlaying={isPlaying}
+            handlePlayPause={handlePlayPause}
+            volume={volume}
+            handleVolumeChange={handleVolumeChange}
+          />
+        )}
+      </Drawer.Screen>
+      {/*       <Drawer.Screen name="Acerca de RCR" component={AboutScreen} /> */}
+
+      <Drawer.Screen
+        name="Acerca de RCR"
+        options={({ navigation }) => ({
+          drawerLabel: 'Acerca de RCR',
+          title: '',
+          headerLeft: () => null,
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ marginRight: 15 }}
+              onPress={() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Inicio' }],
+                });
+              }}
+            >
+              <Icon name="close" size={26} color="#FFF" />
+            </TouchableOpacity>
+          ),
+   /*        headerStyle: { backgroundColor:'#111' }, */
+       headerBackground: () => (
+      <LinearGradient
+        colors={['#111', themeColor]}
+        style={{ flex: 1 }}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 0, y: 0 }}
+      />
+    ),
+          headerTintColor: '#FFF',
+          headerTitleStyle: { fontWeight: '600' },
+        })}
       >
-        <Drawer.Screen name="Home" component={StackNavigator} options={{ headerShown: false }} />
-        <Drawer.Screen name="Acerca de" component={AboutScreen} />
-        <Drawer.Screen name="Compartir App" component={ShareAppScreen} />
+        {props => <AboutScreen {...props} themeColor={themeColor} />}
+      </Drawer.Screen>
+
+       <Drawer.Screen
+        name="Compartir App"
+        options={({ navigation }) => ({
+        drawerLabel: 'Compartir App', // Nombre en el menú
+        title: '',   
+                headerLeft: () => null, 
+          headerRight: () => ( // Nombre en la cabecera
+            <TouchableOpacity
+              style={{ marginRight: 15 }}
+              onPress={() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Inicio' }],
+                });
+              }}
+            >
+              <Icon name="close" size={26} color="#FFF" />
+            </TouchableOpacity>
+          ),
+       headerBackground: () => (
+      <LinearGradient
+        colors={['#111', themeColor]}
+        style={{ flex: 1 }}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 0, y: 0 }}
+      />
+    ),
+          headerTintColor: '#FFF',
+          headerTitleStyle: { fontWeight: '600' },
+        })}
+       >
+                {props => <ShareAppScreen {...props} themeColor={themeColor} />}
+      </Drawer.Screen>
+
+
+       <Drawer.Screen
+        name="Color del Tema"
+        component={ThemeColorScreen}
+        options={({ navigation }) => ({
+        drawerLabel: 'Color del Tema', // Nombre en el menú
+        title: '',    // Nombre en la cabecera
+         headerLeft:() => null,
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ marginRight: 15 }}
+              onPress={() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Inicio' }],
+                });
+              }}
+            >
+              <Icon name="close" size={26} color="#FFF" />
+            </TouchableOpacity>
+          ),
+                headerBackground: () => (
+      <LinearGradient
+        colors={['#111', themeColor]}
+        style={{ flex: 1 }}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 0, y: 0 }}
+      />
+    ),
+          headerTintColor: '#FFF',
+          headerTitleStyle: { fontWeight: '600' },
+        })}
+      />
       </Drawer.Navigator>
+
+      
     </NavigationContainer>
   );
 }
 
+
 const styles = StyleSheet.create({
-  hiddenVideo: {
-    width: 0,
-    height: 0,
-    opacity: 0,
-  },
   background: {
     flex: 1,
     width: '100%',
@@ -209,28 +398,37 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 32,
   },
   icon: {
     marginLeft: 2,
-  },
-  currentTrack: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    marginBottom: 10,
-    marginTop: 5,
   },
   statusText: {
     color: '#fbdd40',
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 8,
+  },
+    statusOnline: {
+    color: '#fafafaff',
+    fontSize: 16,
+    fontWeight: 'bold',
     marginBottom: 4,
   },
-  logoImage: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-  }
+logoBackground: {
+  backgroundColor: 'rgba(0,0,0,0.8)',
+  borderRadius: 70,           // Igual o mayor que el radio del logo
+  padding: 8,                 // Espacio alrededor del logo
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 10,
+},
+logoImage: {
+  width: 120,                 // Ajusta el ancho como prefieras
+  aspectRatio: 1,             // Alto = ancho, mantiene la imagen cuadrada
+  borderRadius: 60,           // La mitad del ancho para que sea circular
+  borderWidth: 2,
+  borderColor: '#FFFFFF',
+  maxHeight: 120,             // Limita la altura máxima
+},
 });

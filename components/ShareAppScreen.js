@@ -28,7 +28,7 @@ const ShareAppScreen = () => {
             <Text style={styles.osText}>iOS</Text>
           </View>
           <Text style={styles.linkText}>{iosLink}</Text>
-          <TouchableOpacity style={styles.copyButton} onPress={() => copyToClipboard(iosLink)}>
+          <TouchableOpacity /* style={styles.copyButton} */       style={{ ...styles.copyButton, pointerEvents: 'auto' }} onPress={() => copyToClipboard(iosLink)}>
             <Text style={styles.buttonText}>Copiar</Text>
           </TouchableOpacity>
         </View>
@@ -39,7 +39,7 @@ const ShareAppScreen = () => {
             <Text style={styles.osText}>Android</Text>
           </View>
           <Text style={styles.linkText}>{androidLink}</Text>
-          <TouchableOpacity style={styles.copyButton} onPress={() => copyToClipboard(androidLink)}>
+          <TouchableOpacity /* style={styles.copyButton} */       style={{ ...styles.copyButton, pointerEvents: 'auto' }} onPress={() => copyToClipboard(androidLink)}>
             <Text style={styles.buttonText}>Copiar</Text>
           </TouchableOpacity>
         </View>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start', // Añadido para alinear los elementos a la izquierda
     justifyContent: 'flex-start', // Cambiado a flex-start para alinear todo desde arriba
-    padding: 20,
+    padding: 10,
   }, 
   header: {
     fontSize: 24,
@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
   },
   linkContainer: {
     alignItems: 'flex-start', // Añadido para alinear los elementos a la izquierda
-    marginBottom: 15,
+    marginBottom: 18,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   osText: {
     fontSize: 16,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 8,
   },
   buttonText: {
     color: '#ffffff',
