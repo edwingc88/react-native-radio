@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "radio-cristiana-radio-app",
+    "name": "RCR",
+    "displayName": "RCR",
     "slug": "radio-cristiana-radio-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,10 +17,9 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "icon": "./assets/icon.png",
+      "permissions": [],
+      "package": "com.edwingc88.radiocristianaradioapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +33,11 @@
           "supportsPictureInPicture": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "aad02811-d7b7-40f4-afc4-e4844aaa132f"
+      }
+    }
   }
 }

@@ -25,7 +25,6 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-clipboard": "^0.0.5",
     "react-native-event-source": "^1.1.0",
     "react-native-fetch": "^2.0.0",
     "react-native-gesture-handler": "~2.24.0",
@@ -34,12 +33,10 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-sse": "^1.2.1",
-    "react-native-track-player": "^4.1.1",
-    "react-native-vector-icons": "^10.2.0",
+    "react-native-vector-icons": "^10.3.0",
     "react-native-video": "^6.8.2",
     "react-native-web": "^0.20.0",
     "react-native-web-linear-gradient": "^1.1.2",
-    "react-native-websocket": "^1.0.2",
     "react-native-webview": "13.13.5"
   },
   "devDependencies": {

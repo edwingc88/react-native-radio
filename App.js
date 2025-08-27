@@ -22,7 +22,7 @@ import ShareAppScreen from './components/ShareAppScreen';
 import Programacion from './src/Programacion';
 import ThemeColor from './components/ThemeColor';
 
-const icon = require('./assets/logo-radio-cristiana-recorte.png');
+const icon = require('./assets/icon.png');
 /* const background = require('./assets/fondo_morado.jpg'); */
 const fondoMorado = require('./assets/fondo_morado.jpg');
 const fondoNegro = require('./assets/fondo_negro.png');
@@ -51,7 +51,6 @@ const HomeScreen = ({
 
   // Selecciona la imagen de fondo según el tema
   const backgroundImage = THEME_IMAGES[themeColor] || fondoMorado;
-
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background}>
@@ -107,13 +106,6 @@ const CustomDrawerContent = (props) => {
   );
 };
 
-/* 
-const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="HomeScreen">
-    <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="Programacion" component={Programacion} options={{ title: 'Programación' }} />
-  </Stack.Navigator>
-); */
 
 const StackNavigator = ({ themeColor, isPlaying, handlePlayPause, volume, handleVolumeChange }) => (
   <Stack.Navigator initialRouteName="HomeScreen">
@@ -203,13 +195,9 @@ useEffect(() => {
 }, []);
 
 
-  // Estado para el color del tema (por defecto morado)
   const [themeColor, setThemeColor] = useState('#8e24aa');
 
-  // Pasamos setThemeColor a ThemeColor para que cambie el fondo
-/*   const ThemeColorScreen = (props) => (
-    <ThemeColor {...props} onChangeTheme={setThemeColor} />
-  ); */
+
 const ThemeColorScreen = (props) => (
   <ThemeColor {...props} onChangeTheme={setThemeColor} themeColor={themeColor} />
 );
@@ -243,7 +231,6 @@ const ThemeColorScreen = (props) => (
           />
         )}
       </Drawer.Screen>
-      {/*       <Drawer.Screen name="Acerca de RCR" component={AboutScreen} /> */}
 
       <Drawer.Screen
         name="Acerca de RCR"
@@ -264,7 +251,6 @@ const ThemeColorScreen = (props) => (
               <Icon name="close" size={26} color="#FFF" />
             </TouchableOpacity>
           ),
-   /*        headerStyle: { backgroundColor:'#111' }, */
        headerBackground: () => (
       <LinearGradient
         colors={['#111', themeColor]}
